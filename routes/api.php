@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,20 +19,21 @@ use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
-// Route::middleware([ 'auth:sanctum', EnsureFrontendRequestsAreStateful::class,])->get('/user', function (Request $request) {
-//      return $request->user();
-
-// });
-
-
-// Route::post('/register',[OrganisateurController::class,'register']);
-// Route::post('/login',[OrganisateurController::class,'login']);
-
 
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'login']);
+
+//route pour CROUD de roles
+Route::post('/addrole',[RoleController::class,'store']);
+Route::post('/updaterole',[RoleController::class,'update']);
+Route::post('/deleterole',[RoleController::class,'destroy']);
+Route::get('/roles',[RoleController::class,'index']);
+Route::get('/role/{id}',[RoleController::class,'show']);
+
+
+
+Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
+
+
+
+

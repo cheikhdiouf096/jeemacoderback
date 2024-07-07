@@ -5,28 +5,47 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\loginRequest;
 use App\Http\Requests\RegisterUser;
+use App\Models\roles;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Exception;
 
+use Laravel\Sanctum\HasApiTokens;
+// use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     public function register(RegisterUser $request)
     {
         try {
+            // Check if photo exists before processing it
+            $imageName = null;
+            if ($request->hasFile('photo')) {
+                $imageName = Str::random(32) . "." . $request->photo->getClientOriginalExtension();
+                Storage::disk('public_images')->put($imageName, file_get_contents($request->photo));
+            }
+
+            // Create new user
             $user = new User();
             $user->firstname = $request->firstname;
             $user->lastname = $request->lastname;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->status = $request->status;
-            $user->photo;
+            $user->photo = $imageName;
+            $user->role_id = $request->role_id;
             $user->save();
+            $role = roles::find($request->role_id);
             return response()->json([
                 'status_code' => 200,
                 'status_message' => 'Utilisateur ajouté avec succès',
                 'Utilisateur' => $user,
+                'role' => $role ? $role->name : null, // Include role name in the response
             ]);
-        } catch (\Exception $e) {
+
+        } catch (Exception $e) {
             return response()->json([
                 'status_code' => 500,
                 'status_message' => 'Erreur lors de l\'ajout de l\'utilisateur',
@@ -34,7 +53,6 @@ class UserController extends Controller
             ]);
         }
     }
-
     public function login(loginRequest $request)
     {
      if(auth()->attempt($request->only(['email','password'])))
@@ -43,7 +61,7 @@ class UserController extends Controller
          $token=$user->createToken('auth_token')->plainTextToken;
          return response()->json([
              'status_code' => 200,
-             'status_message' => 'Utilisateur connecté avec succes',
+             'status_message' => 'Utilisateur connecté en tant que'.' '.$user->role->name,
              'Utilisateur'=>$user,
              'token'=>$token,
          ]);
@@ -54,59 +72,28 @@ class UserController extends Controller
 
          ]);
      }
-
-     // try{
-     //     $user=User::where('email',request('email'))->first();
-     //     $token=$user->createToken('auth_token')->plainTextToken;
-     //     return response()->json([
-     //         'status_code' => 200,
-     //         'status_message' => 'Utilisateur connecté avec succes',
-     //         'Utilisateur'=>$user,
-     //         'token'=>$token,
-     //     ]);
-     // }catch(Exception $e){
-
-     // }
     }
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user) {
+            $user->tokens()->delete(); // Supprime tous les jetons de l'utilisateur
+
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Déconnexion réussie',
+                'user'=>$user,
+            ]);
+        } else {
+            return response()->json([
+                'status_code' => 401,
+                'status_message' => 'Utilisateur non authentifié'
+            ], 401);
+        }
+    }
+
 
 }
 
 
-// <?php
-
-// namespace App\Http\Controllers;
-
-// use App\Http\Requests\RegisterUser; // Correction de l'importation
-// use Illuminate\Http\Request;
-// use App\Models\User;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Hash;
-
-// class UserController extends Controller
-// {
-
-//     //     public function login(Request $request)
-//     //     {
-//     //         $request->validate([
-//     //             'email' => 'required|string|email',
-//     //             'password' => 'required|string',
-//     //         ]);
-
-//     //         if (!Auth::attempt($request->only('email', 'password'))) {
-//     //             return response()->json(['message' => 'Invalid login details'], 401);
-//     //         }
-
-//     //         $user = User::where('email', $request->email)->firstOrFail();
-//     //         $token = $user->createToken('auth_token')->plainTextToken;
-
-//     //         return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
-//     //     }
-
-//     //     public function logout(Request $request)
-//     //     {
-//     //         $request->user()->tokens()->delete();
-
-//     //         return response()->json(['message' => 'Logged out successfully']);
-//     //     }
-
-// }
