@@ -37,7 +37,7 @@ class UserController extends Controller
             $user->photo = $imageName;
             $user->role_id = $request->role_id;
             $user->save();
-            $role = roles::find($request->role_id);
+            $role = roles::find($request->role_id); //retrouvre le nom du role par son id
             return response()->json([
                 'status_code' => 200,
                 'status_message' => 'Utilisateur ajouté avec succès',
