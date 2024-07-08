@@ -43,6 +43,6 @@ class User extends Authenticatable
         return $this->belongsTo(roles::class);
     }
     public function hackathon(){
-        return $this->belongsTo(Hackathon::class);
+        return $this->belongsTo(hackathon::class);
     }
 }
