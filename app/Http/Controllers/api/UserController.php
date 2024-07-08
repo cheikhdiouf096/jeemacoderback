@@ -61,7 +61,7 @@ class UserController extends Controller
          $token=$user->createToken('auth_token')->plainTextToken;
          return response()->json([
              'status_code' => 200,
-             'status_message' => 'Utilisateur connecté en tant que'.' '.$user->role->name,
+             'status_message' => 'User connecté en tant que'.' '.$user->role->name,
              'Utilisateur'=>$user,
              'token'=>$token,
          ]);
