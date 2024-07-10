@@ -10,6 +10,7 @@ use App\Models\roles;
 use App\Models\User;
 use Exception;
 use App\Models\hackathon;
+use App\Models\tag;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,25 @@ use Illuminate\Support\Facades\Storage;
 
 class hackathonController extends Controller
 {
+
+    public function index(){
+        try{
+            $hackathons = Hackathon::all();
+            return response()->json($hackathons);
+        }catch(Exception $e) {
+               return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function store(hackathonRequest $request)
     {
         try {
+            // if (auth()->user()->role_id !== 1) {
+            //     return response()->json([
+            //         'message' => 'Vous n\'êtes pas autorisé à créer des hackathons',
+            //     ], 403);
+            // }
             $logo = null;
             if ($request->hasFile('logo_url')) {
                 $logo = Str::random(32) . "." . $request->logo_url->getClientOriginalExtension();
@@ -37,7 +54,9 @@ class hackathonController extends Controller
             $hackathon->logo_url = $logo; // Utilisation de la variable $logo ici
             $hackathon->theme = $request->theme;
             $hackathon->prix = $request->prix;
-            $hackathon->organisateur_id = auth()->check() ? auth()->user()->id : null; // Vérification de l'utilisateur authentifié
+            $tag = tag::find($request->tag_id);
+            $hackathon->organisateur_id = auth()->check() ? auth()->user()->id : null;
+             // Vérification de l'utilisateur authentifié
 
             if ($hackathon->organisateur_id === null) {
                 return response()->json([
@@ -56,12 +75,17 @@ class hackathonController extends Controller
             return response()->json([
                 'message' => 'Erreur lors de l\'ajout de l\'hakacthon',
                 'error' => $e->getMessage(),
-            ], 500); // Retourne le message d'erreur exact
+            ], 500);
         }
     }
     public function update(EditHackatonRequest $request, Hackathon $hackathon)
    {
     try {
+        // if (auth()->user()->role_id !== 1) {
+        //     return response()->json([
+        //         'message' => 'Vous n\'êtes pas autorisé à modifier des hackathons',
+        //     ], 403);
+        // }
         $hackathon->name = $request->name; // Décommentez cette ligne
         $hackathon->structure_organisateur = $request->structure_organisateur;
         $hackathon->date_debut = $request->date_debut;

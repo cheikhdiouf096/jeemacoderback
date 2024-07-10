@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class hackathon extends Model
+class tag extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    public function users(){
-        return $this->hasMany(User::class);
-    }
-    public function tag(){
-        return $this->belongsTo(tag::class);
+    public function hakacthon(){
+        return $this->hasMany(hackathon::class);
     }
 }

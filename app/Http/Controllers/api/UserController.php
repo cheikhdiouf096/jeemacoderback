@@ -21,28 +21,32 @@ class UserController extends Controller
     {
         try {
             // Check if photo exists before processing it
-            $imageName = null;
-            if ($request->hasFile('photo')) {
-                $imageName = Str::random(32) . "." . $request->photo->getClientOriginalExtension();
-                Storage::disk('public_images')->put($imageName, file_get_contents($request->photo));
-            }
+            // $imageName = null;
+            // if ($request->hasFile('photo')) {
+            //     $imageName = Str::random(32) . "." . $request->photo->getClientOriginalExtension();
+            //     Storage::disk('public_images')->put($imageName, file_get_contents($request->photo));
+            // }
 
             // Create new user
             $user = new User();
             $user->firstname = $request->firstname;
             $user->lastname = $request->lastname;
+            $user->pays=$request->pays;
+            $user->ville=$request->ville;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
-            $user->status = $request->status;
-            $user->photo = $imageName;
-            $user->role_id = $request->role_id;
+            $user->metier = $request->metier;
+            if (!in_array($request->role, ['organisateur', 'participant', 'jury'])) {
+                throw new \Exception('Le rôle spécifié n\'est pas valide.');
+            }
+            $user->role = $request->role;
             $user->save();
-            $role = roles::find($request->role_id); //retrouvre le nom du role par son id
+            // $role = roles::find($request->role_id); //retrouvre le nom du role par son id
             return response()->json([
                 'status_code' => 200,
                 'status_message' => 'Utilisateur ajouté avec succès',
                 'Utilisateur' => $user,
-                'role' => $role ? $role->name : null, // Include role name in the response
+                 // Include role name in the response
             ]);
 
         } catch (Exception $e) {
@@ -61,7 +65,7 @@ class UserController extends Controller
          $token=$user->createToken('auth_token')->plainTextToken;
          return response()->json([
              'status_code' => 200,
-             'status_message' => 'User connecté en tant que'.' '.$user->role->name,
+             'status_message' => 'User connecté en tant que'.' '.$user->role,
              'Utilisateur'=>$user,
              'token'=>$token,
          ]);

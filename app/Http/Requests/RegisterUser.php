@@ -26,11 +26,13 @@ class RegisterUser extends FormRequest
         return [
             'firstname' => 'required',
             'lastname' => 'required',
+            'pays'=>'required',
+            'ville'=>'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'status' => 'required',
-            'role_id' => 'required|exists:roles,id', // Validation for role_id
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'metier' => 'required',
+            'role' => 'required', // Validation for role_id
+
 
 
         ];
@@ -51,17 +53,16 @@ class RegisterUser extends FormRequest
         return [
             'firstname.required' => 'Le prénom est obligatoire',
             'lastname.required' => 'Le nom est obligatoire',
+            'pays.required' =>'le pays est requis',
+            'ville'=>'la ville est requis',
             'email.required' => 'L\'email est obligatoire',
             'email.email' => 'L\'email doit être valide',
             'email.unique' => 'L\'email est déjà utilisé',
             'password.required' => 'Le mot de passe est obligatoire',
             'password.min' => 'Le mot de passe doit contenir au moins 6 caractères',
-            'status.required' => 'Le statut est obligatoire',
-            'role_id.required' => 'Le rôle est obligatoire',
-            'role_id.exists' => 'Le rôle sélectionné est invalide',
-            'photo.image' => 'Le fichier doit être une image',
-            'photo.mimes' => 'L\'image doit être de type jpeg, png, jpg, gif, svg',
-            'photo.max' => 'L\'image ne doit pas dépasser 2MB',
+            'metier.required' => 'Le statut est obligatoire',
+            'role.required' => 'Le rôle est obligatoire',
+
         ];
     }
 }

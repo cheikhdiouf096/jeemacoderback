@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('lieu');
             $table->unsignedBigInteger('organisateur_id');
             $table->foreign('organisateur_id')->references('id')->on('users');
+            $table->unsignedBigInteger('tag_id')->nullable();
+            $table->foreign('tag_id')->references('id')->on('tags');
+
             $table->timestamps();
         });
     }
