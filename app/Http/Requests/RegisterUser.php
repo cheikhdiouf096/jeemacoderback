@@ -31,7 +31,8 @@ class RegisterUser extends FormRequest
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'metier' => 'required',
-            'role' => 'required', // Validation for role_id
+            'role' => 'required',
+             // Validation for role_id
 
 
 

@@ -40,6 +40,18 @@ class User extends Authenticatable
     ];
 
     public function hackathon(){
-        return $this->belongsTo(hackathon::class);
+        return $this->hasMany(hackathon::class);
+    }
+    public function participant()
+    {
+        return $this->hasMany(participant::class);
+    }
+    public function MembreEquipe()
+    {
+        return $this->belongsTo(MembreEquipe::class);
+    }
+    public function evaluation(){
+        return $this->hasMany(Evaluations::class);
+
     }
 }

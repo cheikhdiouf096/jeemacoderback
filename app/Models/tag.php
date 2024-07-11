@@ -10,6 +10,6 @@ class tag extends Model
     use HasFactory;
     protected $guarded=[];
     public function hakacthon(){
-        return $this->hasMany(hackathon::class);
+        return $this->belongsTo(hackathon::class);
     }
 }

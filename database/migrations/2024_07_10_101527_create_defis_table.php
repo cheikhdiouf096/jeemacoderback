@@ -17,13 +17,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('file')->nullable();
             $table->string('critere')->nullable();
+            $table->unsignedBigInteger('hackathon_id');
+            $table->foreign('hackathon_id')->references('id')->on('hackathons')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('defis');

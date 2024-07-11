@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class defis extends Model
+class equipe extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    public function hackathon(){
-        return $this->hasMany(hackathon::class);
-    }
+
+   public function participant(){
+    return $this->belongsTo(participant::class);
+   }
 }

@@ -10,9 +10,20 @@ class hackathon extends Model
     use HasFactory;
     protected $guarded=[];
     public function users(){
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+    public function participant(){
+        return $this->hasMany(participant::class);
     }
     public function tag(){
-        return $this->belongsTo(tag::class);
+        return $this->hasMany(tag::class);
     }
+    public function defis(){
+        return $this->hasMany(defis::class);
+    }
+
+    // public function Analyse(){
+    //     return $this->hasMany(Analyse::class);
+    // }
 }
+

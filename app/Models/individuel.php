@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class defis extends Model
+class individuel extends Model
 {
     use HasFactory;
-    protected $guarded=[];
-    public function hackathon(){
-        return $this->hasMany(hackathon::class);
+    protected $guarder=[];
+    public function participant(){
+        return $this->belongsTo(participant::class);
     }
 }

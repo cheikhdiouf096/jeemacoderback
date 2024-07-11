@@ -1,18 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\loginRequest;
 use App\Http\Requests\RegisterUser;
-use App\Models\roles;
 use App\Models\User;
 use Exception;
-
-use Laravel\Sanctum\HasApiTokens;
-// use Illuminate\Http\Client\Request;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
@@ -20,11 +14,10 @@ class UserController extends Controller
     public function register(RegisterUser $request)
     {
         try {
-            // Check if photo exists before processing it
             // $imageName = null;
             // if ($request->hasFile('photo')) {
             //     $imageName = Str::random(32) . "." . $request->photo->getClientOriginalExtension();
-            //     Storage::disk('public_images')->put($imageName, file_get_contents($request->photo));
+            //     Storage::disk('public_storage')->put($imageName, file_get_contents($request->photo));
             // }
 
             // Create new user
