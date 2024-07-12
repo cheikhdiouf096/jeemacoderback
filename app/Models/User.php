@@ -38,11 +38,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function role()
-    {
-        return $this->belongsTo(roles::class);
-    }
+
     public function hackathon(){
-        return $this->belongsTo(Hackathon::class);
+        return $this->hasMany(hackathon::class);
+    }
+    public function participant()
+    {
+        return $this->hasMany(participant::class);
+    }
+    public function MembreEquipe()
+    {
+        return $this->belongsTo(MembreEquipe::class);
+    }
+    public function evaluation(){
+        return $this->hasMany(Evaluations::class);
+
     }
 }
