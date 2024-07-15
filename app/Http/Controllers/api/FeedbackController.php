@@ -29,10 +29,10 @@ class FeedbackController extends Controller
     ]);
 
     // Création d'un nouvel objet Feedback
-    $addFeedback = new Feedback();  // Remplacez `feedback` par `Feedback`
+    $addFeedback = new Feedback();  
     $addFeedback->hackathon_id = $request->hackathon_id;
     $addFeedback->content = $request->content;
-    $addFeedback->user_id = auth()->check() ? auth()->user()->id : null; // Assurez-vous d'utiliser = au lieu de ==
+    $addFeedback->user_id = auth()->check() ? auth()->user()->id : null; 
 
     if ($addFeedback->user_id === null) {
         return response()->json([
