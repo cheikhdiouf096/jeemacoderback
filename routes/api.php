@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\hackathonController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\FeedbackController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,16 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::delete('/hackathons/delete/{hackathon}',[hackathonController::class,'destroy']);
 
 
+    //Route pour les feedback ;
+    Route::post('/create',[FeedbackController::class, 'store']);
+    Route::get('/feedback', [FeedbackController::class, 'index']);
+    Route::get('/feedback/{id}', [FeedbackController::class, 'show']);
+    Route::put('/feedback/update{id}', [FeedbackController::class, 'update']);
+    Route::delete('/feedback/delete{id}', [FeedbackController::class, 'destroy']);
+
     ;});
+
+
+
 
 
