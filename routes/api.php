@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\hackathonController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProfileController;
 
 use App\Http\Controllers\Api\UserController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -17,10 +18,14 @@ Route::post('/login', [UserController::class, 'login']);
 
 // Routes pour CRUD de roles
 Route::middleware('auth:sanctum')->group(function () {
-
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::post('/addtag',[TagController::class, 'store']);
 
-    Route::post('/logout', [UserController::class, 'logout']);
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile/update', [ProfileController::class, 'update']);
+     Route::post('/logout', [UserController::class, 'logout']);
 
 
     Route::middleware('check.role:1')->group(function () {
