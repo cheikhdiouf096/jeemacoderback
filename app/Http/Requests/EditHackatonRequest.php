@@ -1,26 +1,18 @@
 <?php
 
 namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class hackathonRequest extends FormRequest
+class EditHackatonRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -30,9 +22,8 @@ class hackathonRequest extends FormRequest
             'date_debut' => 'required',
             'date_fin' => 'required',
             'lieu' => 'required',
-            'logo_url'=>'nullable',
-            'tag_id'=>'required',
-
+            'logo_url' => 'nullable',
+            'tag_id'=>'nullable',
         ];
     }
 
@@ -45,17 +36,18 @@ class hackathonRequest extends FormRequest
             'errorList' => $validator->errors(),
         ]));
     }
+
     public function messages()
     {
         return [
-
             'name.required' => 'Le nom est obligatoire',
             'structure_organisateur.required' => 'La structure est obligatoire',
             'description.required' => 'La description est obligatoire',
             'date_debut.required' => 'La date de début est obligatoire',
             'date_fin.required' => 'La date de fin est obligatoire',
             'lieu.required' => 'Le lieu est obligatoire',
-            'tag_id'=>'le tag est requier',
         ];
     }
 }
+
+

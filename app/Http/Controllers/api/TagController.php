@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
-use App\Models\roles;
-use Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\tag;
+use Exception;
 
-class RoleController extends Controller
+class TagController extends Controller
 {
-     // Afficher la liste des rôles
     public function index()
     {
         try{
-            $roles = roles::all();
+            $tag = tag::all();
         return response()->json([
-            'roles' => $roles,
-           'message' => 'Rôles récupérés avec succès'
+            'tag' => $tag,
+           'message' => 'tags récupérés avec succès'
         ]);
         }catch(Exception $e){
             return response()->json([
-               'message' => 'Erreur lors de la récupération des rôles',
+               'message' => 'Erreur lors de la récupération des tag',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -31,20 +30,20 @@ class RoleController extends Controller
     {
       try{
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles',
+            'name' => 'required',
         ]);
 
-        $role = roles::create([
+        $tag = tag::create([
             'name' => $request->name,
         ]);
         return response()->json([
-            'role' => $role,
-           'message' => 'Rôle créé avec succès',
-           $role, 201
+            'tag' => $tag,
+           'message' => 'Tag créé avec succès',
+           $tag, 201
         ]);
       }catch(Exception $e){
         return response()->json([
-           'message' => 'Erreur lors de la création du rôle',
+           'message' => 'Erreur lors de la création du tag',
             'error' => $e->getMessage()
         ], 500);
       }
@@ -54,9 +53,9 @@ class RoleController extends Controller
     public function show($id)
     {
         try{
-         $role = roles::findOrFail($id);
+         $tag = tag::findOrFail($id);
         return response()->json([
-            'role' => $role,
+            'tag' => $tag,
            'message' => 'Rôle trouvé',
         ]);
         }catch(Exception $e){
@@ -72,18 +71,18 @@ class RoleController extends Controller
     {
         try{
 
-        $role = roles::findOrFail($id);
+        $tag = tag::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'name' => 'required|string|max:255|unique:tag,name,' . $tag->id,
         ]);
 
-        $role->update([
+        $tag->update([
             'name' => $request->name,
         ]);
 
         return response()->json([
-            'role' => $role,
+            'tag' => $tag,
            'message' => 'Rôle mis à jour avec succès',
         ]);
         }catch(Exception $e){
@@ -98,11 +97,11 @@ class RoleController extends Controller
     public function destroy($id)
     {
        try{
-        $role = roles::findOrFail($id);
-        $role->delete();
+        $tag = tag::findOrFail($id);
+        $tag->delete();
 
         return response()->json([
-            'role' => $role,
+            'tag' => $tag,
            'message' => 'Rôle supprimé avec succès',
            null, 204
         ]);
@@ -113,4 +112,16 @@ class RoleController extends Controller
         ], 500);
        }
     }
+
+
+
+
 }
+
+
+
+
+
+
+
+

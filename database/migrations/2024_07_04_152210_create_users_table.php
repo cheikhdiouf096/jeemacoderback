@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
+            $table->string('pays')->nullable();
+            $table->string('ville')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('status');
-            $table->string('photo')->nullable();
-            $table->rememberToken();
+            $table->string('metier')->nullable();
+            $table->enum('role', ['organisateur', 'participant', 'jury']);
+            $table->string('photo')->nullable()->nullable();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }

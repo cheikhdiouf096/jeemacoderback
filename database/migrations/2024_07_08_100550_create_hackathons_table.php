@@ -22,8 +22,13 @@ return new class extends Migration
             $table->date('date_fin');
             $table->string('prix');
             $table->string('lieu');
+            $table->integer('countNbrParticipant');
+            $table->enum('status', ['inscriptions ouvert', 'inscriptions férmées', 'hackathon terminée','hackathon annulée']);
             $table->unsignedBigInteger('organisateur_id');
-            $table->foreign('organisateur_id')->references('id')->on('users');
+            $table->foreign('organisateur_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('tag_id')->nullable();
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
